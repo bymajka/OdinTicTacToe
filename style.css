@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&display=swap');
+
 html,
 body,
 div,
@@ -129,11 +131,19 @@ table {
     border-spacing: 0;
 }
 
+body {
+    font-family: 'Changa One';
+    font-size: 32px;
+    background-color: #F5F0CD;
+}
+
 main {
     margin: 10rem auto;
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
 .gameboard {
@@ -151,9 +161,10 @@ main {
     align-items: center;
 
     border: 5px solid black;
+    background-color: #F5F0CD;
     padding: 2rem;
 }
 
 .game-cell:hover {
-    background-color: #baf9f9;
+    background-color: #B1F0F7;
 }

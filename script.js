@@ -7,8 +7,8 @@ function createGameboard() {
     return {gameboard};
 }
 
-function createPlayer(marker, name) {
-    return {marker, name}
+function createPlayer(marker, name, game_color) {
+    return {marker, name, game_color}
 }
 function createGamemanager() {
     let activePlayer = player1;
@@ -22,6 +22,7 @@ function createGamemanager() {
         if(checkVictory()){
             gameStopped = true;
             console.log(`${activePlayer.name} wins!`);
+            displayController.showWiner(activePlayer.name);
         }
         swapPlayerTurn();
     }
@@ -49,6 +50,7 @@ function createGamemanager() {
             }
         }
         gameStopped = false;
+        displayController.hideWiner();
         displayController.displayBoardOnScreen();
     }
 
@@ -87,22 +89,39 @@ function createGamemanager() {
 }
 function createDisplayController () {
     const gameboardCells = document.querySelectorAll('.game-cell');
-    console.log(gameboardCells);
+    const winerLabel = document.querySelector('.show-winer');
 
     const displayBoardOnScreen = () => {
         for(let row = 0; row < 3; row++){
             for(let column = 0; column < 3; column++){
-                if(playingGameboard.gameboard[row][column] == ''){
-                    gameboardCells[row*3 + column].innerHTML = '';
-                }
-                else{
-                    gameboardCells[row*3 + column].innerHTML = playingGameboard.gameboard[row][column];
-                }
+                const cellIndex = row * 3 + column;
+            const cell = gameboardCells[cellIndex];
+            const marker = playingGameboard.gameboard[row][column];
+
+            // Clear cell content and styles
+            cell.innerHTML = '';
+            cell.style.backgroundColor = '';
+
+            if (marker === 'X') {
+                cell.innerHTML = marker;
+                cell.style.backgroundColor = player1.game_color; // Use player1's color
+            } else if (marker === 'O') {
+                cell.innerHTML = marker;
+                cell.style.backgroundColor = player2.game_color; // Use player2's color
+            }
             }
         }
     }
 
-    return {gameboardCells, displayBoardOnScreen};
+    const showWiner = (player) => {
+        winerLabel.innerHTML = `${player} wins!`;
+    }
+
+    const hideWiner = () => {
+        winerLabel.innerHTML = '';
+    }
+
+    return {gameboardCells, displayBoardOnScreen, showWiner, hideWiner};
 }
 function inputController() {
     displayController.gameboardCells.forEach(cell => {
@@ -119,8 +138,8 @@ function inputController() {
 
 const playingGameboard = createGameboard();
 
-let player1 = createPlayer('X', "Player One");
-let player2 = createPlayer('O', "Player Two");
+let player1 = createPlayer('X', "Player One", "#81BFDA");
+let player2 = createPlayer('O', "Player Two", "#FADA7A");
 
 const gamemanager = createGamemanager();
 const displayController = createDisplayController();
