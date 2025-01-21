@@ -30,6 +30,7 @@ function createGamemanager() {
 
     const swapPlayerTurn = () =>{
         activePlayer = activePlayer === player1 ? player2 : player1;
+        displayController.showTurnQueue(activePlayer);
         console.log(activePlayer);
     };
 
@@ -90,6 +91,7 @@ function createGamemanager() {
 function createDisplayController () {
     const gameboardCells = document.querySelectorAll('.game-cell');
     const winerLabel = document.querySelector('.show-winer');
+    const turnQueue = document.querySelector('.turn-management');
 
     const displayBoardOnScreen = () => {
         for(let row = 0; row < 3; row++){
@@ -117,11 +119,29 @@ function createDisplayController () {
         winerLabel.innerHTML = `${player} wins!`;
     }
 
+    const showTurnQueue = (player) =>{
+        turnQueue.classList.add('fade-out'); 
+    
+    setTimeout(() => {
+        if (player.name === "Player One") {
+            turnQueue.innerHTML = "First player's turn ( X )";
+        } else {
+            turnQueue.innerHTML = "Second player's turn ( O )";
+        }
+        turnQueue.classList.remove('fade-out'); 
+        turnQueue.classList.add('fade-in'); 
+    }, 500); 
+
+    setTimeout(() => {
+        turnQueue.classList.remove('fade-in'); 
+    }, 1000); 
+    }
+
     const hideWiner = () => {
         winerLabel.innerHTML = '';
     }
 
-    return {gameboardCells, displayBoardOnScreen, showWiner, hideWiner};
+    return {gameboardCells, displayBoardOnScreen, showWiner, hideWiner, showTurnQueue};
 }
 function inputController() {
     displayController.gameboardCells.forEach(cell => {
@@ -143,4 +163,5 @@ let player2 = createPlayer('O', "Player Two", "#FADA7A");
 
 const gamemanager = createGamemanager();
 const displayController = createDisplayController();
+displayController.showTurnQueue(gamemanager.activePlayer);
 inputController();
