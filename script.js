@@ -116,7 +116,13 @@ function createDisplayController () {
     }
 
     const showWiner = (player) => {
+        winerLabel.style.display = 'block';
         winerLabel.innerHTML = `${player} wins!`;
+    }
+
+    const hideWiner = () => {
+        winerLabel.style.display = 'none';
+        winerLabel.innerHTML = '';
     }
 
     const showTurnQueue = (player) =>{
@@ -135,10 +141,6 @@ function createDisplayController () {
     setTimeout(() => {
         turnQueue.classList.remove('fade-in'); 
     }, 1000); 
-    }
-
-    const hideWiner = () => {
-        winerLabel.innerHTML = '';
     }
 
     return {gameboardCells, displayBoardOnScreen, showWiner, hideWiner, showTurnQueue};
